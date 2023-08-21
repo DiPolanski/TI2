@@ -6,13 +6,14 @@ class Somar_Dois_Num {
 		
 		int num1, num2, soma;
 		
-		System.out.println("Digite um número");
+		System.out.println("Digite primeiro número:");
 		num1 = sc.nextInt();
-		System.out.println("Digite outro número");
+		System.out.println("Digite segundo número:");
 		num2 = sc.nextInt();
 		
 		soma = num1 + num2;
 		
-		System.out.println("Soma:" + soma);
+		System.out.println(num1 + " + " + num2 + " = " + soma);
 		}
 }
+
