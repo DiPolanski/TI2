@@ -1,1 +1,237 @@
+import java.util.Scanner;
+
+public class Principal {
+    private static JogadorFutebol[] jogadores = new JogadorFutebol[100];
+    private static int totalJogadores = 0;
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean sair = false;
+
+        while (!sair) {
+            System.out.println("----- Menu -----");
+            System.out.println("1. Listar jogadores");
+            System.out.println("2. Inserir jogador");
+            System.out.println("3. Excluir jogador");
+            System.out.println("4. Atualizar jogador");
+            System.out.println("5. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int escolha = scanner.nextInt();
+            scanner.nextLine();  // Limpa o buffer
+
+            switch (escolha) {
+                case 1:
+                    listarJogadores();
+                    break;
+                case 2:
+                    inserirJogador();
+                    break;
+                case 3:
+                    excluirJogador();
+                    break;
+                case 4:
+                    atualizarJogador();
+                    break;
+                case 5:
+                    sair = true;
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Escolha uma opção válida.");
+                    break;
+            }
+        }
+    }
+
+    private static void listarJogadores() {
+        if (totalJogadores == 0) {
+            System.out.println("Nenhum jogador encontrado.");
+        } else {
+            for (int i = 0; i < totalJogadores; i++) {
+                exibirInfoJogador(jogadores[i]);
+            }
+        }
+    }
+
+    private static void inserirJogador() {
+        if (totalJogadores < jogadores.length) {
+            System.out.print("Nome do jogador: ");
+            String nome = scanner.nextLine();
+            System.out.print("Apelido do jogador: ");
+            String apelido = scanner.nextLine();
+            System.out.print("Time do jogador: ");
+            String time = scanner.nextLine();
+            System.out.print("Idade do jogador: ");
+            int idade = scanner.nextInt();
+            scanner.nextLine();  // Limpa o buffer
+
+            JogadorFutebol novoJogador = new JogadorFutebol(nome, apelido, time, idade);
+            jogadores[totalJogadores] = novoJogador;
+            totalJogadores++;
+
+            System.out.println("Jogador inserido com sucesso!");
+        } else {
+            System.out.println("Limite máximo de jogadores atingido.");
+        }
+    }
+
+    private static void excluirJogador() {
+        System.out.print("Nome do jogador a ser excluído: ");
+        String nome = scanner.nextLine();
+
+        boolean jogadorEncontrado = false;
+        for (int i = 0; i < totalJogadores; i++) {
+            if (jogadores[i].getNome().equalsIgnoreCase(nome)) {
+                jogadorEncontrado = true;
+                for (int j = i; j < totalJogadores - 1; j++) {
+                    jogadores[j] = jogadores[j + 1];
+                }
+                totalJogadores--;
+                System.out.println("Jogador excluído com sucesso!");
+                break;
+            }
+        }
+
+        if (!jogadorEncontrado) {
+            System.out.println("Jogador não encontrado.");
+        }
+    }
+
+    private static void atualizarJogador() {
+        System.out.print("Nome do jogador a ser atualizado: ");
+        String nome = scanner.nextLine();
+
+        boolean jogadorEncontrado = false;
+        for (int i = 0; i < totalJogadores; i++) {
+            if (jogadores[i].getNome().equalsIgnoreCase(nome)) {
+                jogadorEncontrado = true;
+                System.out.print("Novo nome do jogador: ");
+                jogadores[i].setNome(scanner.nextLine());
+                System.out.print("Novo apelido do jogador: ");
+                jogadores[i].setApelido(scanner.nextLine());
+                System.out.print("Novo time do jogador: ");
+                jogadores[i].setTime(scanner.nextLine());
+                System.out.print("Nova idade do jogador: ");
+                jogadores[i].setIdade(scanner.nextInt());
+                scanner.nextLine();  // Limpa o buffer
+
+                System.out.println("Jogador atualizado com sucesso!");
+                break;
+            }
+        }
+
+        if (!jogadorEncontrado) {
+            System.out.println("Jogador não encontrado.");
+        }
+    }
+
+    private static void exibirInfoJogador(JogadorFutebol jogador) {
+        System.out.println("Nome: " + jogador.getNome());
+        System.out.println("Apelido: " + jogador.getApelido());
+        System.out.println("Time: " + jogador.getTime());
+        System.out.println("Idade: " + jogador.getIdade());
+        System.out.println();
+    }
+}
+
+class JogadorFutebol {
+    private String nome;
+    private String apelido;
+    private String time;
+    private int idade;
+
+    public JogadorFutebol(String nome, String apelido, String time, int idade) {
+        this.nome = nome;
+        this.apelido = apelido;
+        this.time = time;
+        this.idade = idade;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+}
+
+class JogadorFutebolDAO {
+    private JogadorFutebol[] jogadores = new JogadorFutebol[100];
+    private int totalJogadores = 0;
+
+    public void inserir(JogadorFutebol jogador) {
+        if (totalJogadores < jogadores.length) {
+            jogadores[totalJogadores] = jogador;
+            totalJogadores++;
+        } else {
+            System.out.println("Limite máximo de jogadores atingido.");
+        }
+    }
+
+    public void atualizar(JogadorFutebol jogadorAtualizado) {
+        for (int i = 0; i < totalJogadores; i++) {
+            JogadorFutebol jogador = jogadores[i];
+            if (jogador.getNome().equalsIgnoreCase(jogadorAtualizado.getNome())) {
+                jogadores[i] = jogadorAtualizado;
+                break;
+            }
+        }
+    }
+
+    public void excluir(String nome) {
+        for (int i = 0; i < totalJogadores; i++) {
+            JogadorFutebol jogador = jogadores[i];
+            if (jogador.getNome().equalsIgnoreCase(nome)) {
+                for (int j = i; j < totalJogadores - 1; j++) {
+                    jogadores[j] = jogadores[j + 1];
+                }
+                totalJogadores--;
+                break;
+            }
+        }
+    }
+
+    public JogadorFutebol buscarPorNome(String nome) {
+        for (int i = 0; i < totalJogadores; i++) {
+            JogadorFutebol jogador = jogadores[i];
+            if (jogador.getNome().equalsIgnoreCase(nome)) {
+                return jogador;
+            }
+        }
+        return null;
+    }
+
+    public JogadorFutebol[] listarTodos() {
+        JogadorFutebol[] lista = new JogadorFutebol[totalJogadores];
+        System.arraycopy(jogadores, 0, lista, 0, totalJogadores);
+        return lista;
+    }
+}
 
