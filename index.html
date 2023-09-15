@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Controle de Estoque</h1>
+
+    <h2>Cadastrar Produto</h2>
+    <form id="cadastrarForm">
+        <label for="nomeProduto">Nome do Produto:</label>
+        <input type="text" id="nomeProduto" name="nomeProduto" required>
+
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade" required>
+
+        <label for="dataFabricacao">Data de Fabricação:</label>
+        <input type="date" id="dataFabricacao" name="dataFabricacao" required>
+
+        <label for="preco">Preço:</label>
+        <input type="number" id="preco" name="preco" step="0.01" required>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" rows="4" required></textarea>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Excluir Produto</h2>
+    <form id="excluirForm">
+        <label for="idProduto">ID do Produto:</label>
+        <input type="number" id="idProduto" name="idProduto" required>
+        
+        <button type="submit">Excluir</button>
+    </form>
+
+    <h2>Listar Produtos</h2>
+    <ul id="listaProdutos">
+        <!-- Aqui serão listados os produtos dinamicamente usando JavaScript -->
+    </ul>
+
+    <script>
+        const cadastrarForm = document.getElementById('cadastrarForm');
+        const excluirForm = document.getElementById('excluirForm');
+        const listaProdutos = document.getElementById('listaProdutos');
+        const produtos = [];
+
+        cadastrarForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nomeProduto = e.target.nomeProduto.value;
+            const quantidade = parseInt(e.target.quantidade.value);
+            const dataFabricacao = e.target.dataFabricacao.value;
+            const preco = parseFloat(e.target.preco.value);
+            const descricao = e.target.descricao.value;
+
+            // Aqui você pode adicionar validações e lógica para cadastrar o produto
+
+            produtos.push({ nomeProduto, quantidade, dataFabricacao, preco, descricao });
+            atualizarListaProdutos();
+        });
+
+        excluirForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const idProduto = parseInt(e.target.idProduto.value);
+
+            // Aqui você pode adicionar lógica para excluir o produto com base no ID
+
+            produtos.splice(idProduto - 1, 1); // Excluir o produto com base no índice
+            atualizarListaProdutos();
+        });
+
+        function atualizarListaProdutos() {
+            listaProdutos.innerHTML = '';
+            produtos.forEach((produto, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `ID: ${index + 1}, Nome: ${produto.nomeProduto}, Quantidade: ${produto.quantidade}, Data de Fabricação: ${produto.dataFabricacao}, Preço: ${produto.preco}, Descrição: ${produto.descricao}`;
+                listaProdutos.appendChild(listItem);
+            });
+        }
+
+        // Você também pode adicionar funcionalidades adicionais, como salvar e carregar dados do localStorage.
+    </script>
+</body>
+</html>
